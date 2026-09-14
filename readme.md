@@ -1,11 +1,11 @@
-# Rolster Reactive Store
+# Rolster Nexus
 
 Library that allows you to manage the status of applications.
 
 ## Installation
 
 ```
-npm i @rolster/reactive-store
+npm i @rolster/nexus
 ```
 
 ## Configuration
@@ -29,7 +29,7 @@ A small, framework-agnostic state container built on top of the observable from
 Instantiate a `Store` with its initial state, then read, update and subscribe:
 
 ```typescript
-import { Store } from '@rolster/reactive-store';
+import { Store } from '@rolster/nexus';
 
 interface CounterState {
   count: number;
@@ -64,7 +64,7 @@ Extend `Store` to encapsulate your domain logic. The protected `reduce` and
 `select` methods let you express updates and derived reads declaratively:
 
 ```typescript
-import { Store } from '@rolster/reactive-store';
+import { Store } from '@rolster/nexus';
 
 interface CartState {
   items: Product[];
