@@ -60,11 +60,17 @@ every change; `listen` only emits on future changes.
 
 ### Custom stores with actions
 
-Extend `Store` to encapsulate your domain logic. The protected `reduce` and
-`select` methods let you express updates and derived reads declaratively:
+Extend `Store` to encapsulate your domain logic. The protected
+`reduce(reducer: Reducer<T>)` and `select(selector: Selector<T, V>)` methods
+let you express updates and derived reads declaratively:
 
 ```typescript
 import { Store } from '@rolster/nexus';
+
+interface Product {
+  name: string;
+  price: number;
+}
 
 interface CartState {
   items: Product[];
@@ -91,6 +97,28 @@ class CartStore extends Store<CartState> {
 const cart = new CartStore();
 cart.addItem({ name: 'Mouse', price: 25 });
 cart.count; // 1
+```
+
+### Types
+
+| Type               | Description                                                                                                                                                          |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AbstractStore<T>` | Abstract contract implemented by `Store`: `value`, `subscribe`, `listen` and `reset`. Depend on it (for example when injecting a store) instead of a concrete class. |
+| `Reducer<T>`       | `(value: Readonly<T>) => T` — builds the next state from the current one; argument of `reduce`.                                                                      |
+| `Selector<T, V>`   | `(value: Readonly<T>) => V` — derives a value from the current state; argument of `select`.                                                                          |
+
+```typescript
+import { AbstractStore } from '@rolster/nexus';
+
+class CartView {
+  constructor(private store: AbstractStore<CartState>) {}
+
+  public render(): Unsubscription {
+    return this.store.subscribe((state) => console.log(state.total));
+  }
+}
+
+new CartView(new CartStore());
 ```
 
 ## Contributing
